@@ -1,3 +1,3 @@
 <template>
-    <img src="assets/bmw-logo.svg"/>
+    <img src="/assets/bmw-logo.svg"/>
 </template>
