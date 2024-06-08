@@ -76,6 +76,9 @@ class CommentController extends Controller
 
         $comment->delete();
 
-        return to_route('posts.show', $comment->post_id);
+        return to_route('posts.show', [
+            'post' => $comment->post_id,
+            'page' => $request->query('page'),
+        ]);
     }
 }
