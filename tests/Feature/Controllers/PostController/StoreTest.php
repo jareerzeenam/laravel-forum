@@ -8,7 +8,17 @@ use function Pest\Laravel\post;
 beforeEach(function () {
     $this->validData = [
         'title' => 'Hello World',
-        'body' => 'This is my very first post!'
+        'body' => 'Lorem ipsum dolor sit amet consectetur adipiscing
+        elit nullam iaculis, mi vehicula luctus porta egestas nascetur
+        aenean vulputate, interdum convallis feugiat eros torquent gravida
+        inceptos cras. Eros posuere ad magna vivamus velit et lobortis varius
+        natoque, sollicitudin imperdiet massa egestas duis cras tempor urna
+        penatibus pharetra, quisque taciti convallis odio sed nec mi justo.
+        Blandit venenatis varius porttitor eget ridiculus laoreet, nisl ligula
+        sem enim magna, hac inceptos aliquet leo facilisis. Penatibus tortor
+        pharetra aenean pulvinar luctus per, semper molestie tempus porta
+        suspendisse enim, ornare eros nibh orci cubilia.
+'
     ];
 });
 
@@ -57,5 +67,5 @@ it('requires a valid data', function (array $badData, array|string $errors) {;
     [['body' => 1],'body'],
     [['body' => 1.0],'body'],
     [['body' => str_repeat('a', 10001)],'body'],
-    [['body' => str_repeat('a', 9)],'body'],
+    [['body' => str_repeat('a', 99)],'body'],
 ]);
