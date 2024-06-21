@@ -10,6 +10,11 @@ use function to_route;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Post::class);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -25,7 +30,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Posts/Create');
     }
 
     /**
@@ -35,7 +40,7 @@ class PostController extends Controller
     {
         $data = $request->validate([
             'title' => ['required', 'string', 'min:10', 'max:120'],
-            'body' => ['required', 'string','min:10', 'max:10000'],
+            'body' => ['required', 'string','min:100', 'max:10000'],
         ]);
 
         $post = Post::create([
