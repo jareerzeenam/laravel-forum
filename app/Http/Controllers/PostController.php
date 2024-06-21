@@ -6,6 +6,7 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use function dd;
 use function to_route;
 
 class PostController extends Controller
@@ -25,7 +26,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Posts/Create');
     }
 
     /**
