@@ -6,8 +6,6 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use function dd;
-use function dump;
 use function to_route;
 
 class PostController extends Controller
@@ -37,7 +35,7 @@ class PostController extends Controller
     {
         $data = $request->validate([
             'title' => ['required', 'string', 'min:10', 'max:120'],
-            'body' => ['required', 'string', 'min:10', 'max:10000'],
+            'body' => ['required', 'string','min:10', 'max:10000'],
         ]);
 
         $post = Post::create([
@@ -45,11 +43,6 @@ class PostController extends Controller
             'user_id' => $request->user()->id,
         ]);
 
-
-        $post = Post::create([
-            ...$data,
-            'user_id' => $request->user()->id,
-        ]);
 
         return to_route('posts.show', $post);
     }

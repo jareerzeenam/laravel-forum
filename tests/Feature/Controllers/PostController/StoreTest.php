@@ -7,8 +7,8 @@ use function Pest\Laravel\post;
 
 beforeEach(function () {
     $this->validData = [
-        'title' => 'My Test Post',
-        'body' => 'This is my first post.',
+        'title' => 'Hello World',
+        'body' => 'This is my very first post!'
     ];
 });
 
@@ -65,7 +65,7 @@ it('requires a valid body', function ($badBody) {
     null,
     true,
     1,
-    1.0,
-    str_repeat('a', 10_001),
-    str_repeat('a', 99),
+    1.5,
+    str_repeat('a', 9),
+    str_repeat('a', 10001),
 ]);
