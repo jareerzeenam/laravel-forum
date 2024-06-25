@@ -7,6 +7,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use function redirect;
 use function to_route;
 
 class PostController extends Controller
@@ -50,7 +51,7 @@ class PostController extends Controller
         ]);
 
 
-        return to_route('posts.show', $post);
+        return redirect($post->showRoute());
     }
 
     /**
@@ -59,7 +60,7 @@ class PostController extends Controller
     public function show(Request $request, Post $post)
     {
         if (! Str::contains($post->showRoute(), $request->path())) {
-            return redirect($post->showRoute($request->query()));
+            return redirect($post->showRoute($request->query()), status: 301);
         }
 
         $post->load('user');
