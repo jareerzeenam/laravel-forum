@@ -3,7 +3,7 @@
         <Container>
         <ul class="divide-y">
             <li v-for="post in posts.data" :key="post.id">
-                <Link :href="route('posts.show', post.id)" class="block group px-2 py-4">
+                <Link :href="post.routes.show" class="block group px-2 py-4">
                     <span class="first-letter:uppercase font-bold text-lg group-hover:text-indigo-600">{{ post.title }}</span>
                     <span class="block pt-1 text-sm text-gray-600">{{ formattedDate(post) }} by {{ post.user.name }}</span>
                 </Link>

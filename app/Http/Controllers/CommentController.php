@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use function dd;
-use function to_route;
+use function redirect;
 
 class CommentController extends Controller
 {
@@ -28,7 +27,7 @@ class CommentController extends Controller
             'post_id' => $post->id,
         ]);
 
-        return to_route('posts.show', $post)
+        return redirect($post->showRoute())
             ->banner('Comment added successfully!');
     }
 
@@ -42,7 +41,7 @@ class CommentController extends Controller
 
         $comment->update($data);
 
-        return to_route('posts.show',['post' => $comment->post_id, 'page' => $request->query('page')])
+        return redirect($comment->post->showRoute(['page' => $request->query('page')]))
             ->banner('Comment updated successfully!');
     }
 
@@ -53,9 +52,7 @@ class CommentController extends Controller
     {
         $comment->delete();
 
-        return to_route('posts.show', [
-            'post' => $comment->post_id,
-            'page' => $request->query('page'),
-        ])->dangerBanner('Comment deleted successfully!');
+        return redirect($comment->post->showRoute(['page' => $request->query('page')]))
+            ->dangerBanner('Comment deleted successfully!');
     }
 }
