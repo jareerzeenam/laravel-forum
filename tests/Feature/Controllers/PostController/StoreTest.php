@@ -8,17 +8,7 @@ use function Pest\Laravel\post;
 beforeEach(function () {
     $this->validData = [
         'title' => 'Hello World',
-        'body' => 'Lorem ipsum dolor sit amet consectetur adipiscing
-        elit nullam iaculis, mi vehicula luctus porta egestas nascetur
-        aenean vulputate, interdum convallis feugiat eros torquent gravida
-        inceptos cras. Eros posuere ad magna vivamus velit et lobortis varius
-        natoque, sollicitudin imperdiet massa egestas duis cras tempor urna
-        penatibus pharetra, quisque taciti convallis odio sed nec mi justo.
-        Blandit venenatis varius porttitor eget ridiculus laoreet, nisl ligula
-        sem enim magna, hac inceptos aliquet leo facilisis. Penatibus tortor
-        pharetra aenean pulvinar luctus per, semper molestie tempus porta
-        suspendisse enim, ornare eros nibh orci cubilia.
-'
+        'body' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit nullam iaculis, mi vehicula luctus porta egestas nascetur aenean vulputate, interdum convallis feugiat eros torquent gravida inceptos cras. Eros posuere ad magna vivamus velit et lobortis varius'
     ];
 });
 
@@ -32,7 +22,7 @@ it('stores a post', function () {
 
     actingAs($user)->post(route('posts.store'), $this->validData);
 
-    $this->assertDatabaseHas(Post::class,[
+    $this->assertDatabaseHas(Post::class, [
         ...$this->validData,
         'user_id' => $user->id,
     ]);
@@ -43,7 +33,7 @@ it('redirects to the post show page', function () {
 
     actingAs($user)
         ->post(route('posts.store'), $this->validData)
-        ->assertRedirect(route('posts.show', Post::latest('id')->first()));
+        ->assertRedirect(Post::latest('id')->first()->showRoute());
 });
 
 it('requires a valid data', function (array $badData, array|string $errors) {;
