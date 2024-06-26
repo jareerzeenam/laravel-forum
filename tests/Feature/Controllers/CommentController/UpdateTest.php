@@ -39,7 +39,7 @@ it('redirects to the post show page', function () {
         ->put(route('comments.update', $comment), [
             'body' => 'Updated comment body',
         ])
-        ->assertRedirect(route('posts.show', $comment->post));
+        ->assertRedirect($comment->post->showRoute());
 });
 
 it('redirects to the current page of comments', function () {
@@ -52,10 +52,7 @@ it('redirects to the current page of comments', function () {
         ]), [
             'body' => 'Updated comment body',
         ])
-        ->assertRedirect(route('posts.show', [
-            'post' => $comment->post,
-            'page' => 2,
-        ]));
+        ->assertRedirect($comment->post->showRoute(['page' => 2]));
 });
 
 it('cannot update a comment from another user', function () {
