@@ -31,3 +31,12 @@ it('passes comments to the view', function () {
     get($post->showRoute())
         ->assertHasPaginatedResource('comments', CommentResource::collection($comments->reverse()));
 });
+
+it('will redirect if the slug is incorrect', function () {
+    $post = Post::factory()->create(
+        ['title' => 'Hello world']
+    );
+
+    get(route('posts.show', [$post, 'incorrect-slug', 'page' => 2]))
+        ->assertRedirect($post->showRoute(['page' => 2]));
+});
