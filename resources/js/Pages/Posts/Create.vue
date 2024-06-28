@@ -12,7 +12,8 @@
 
                 <div class="mt-2">
                     <InputLabel for="body" class="sr-only">Body</InputLabel>
-                    <TextArea id="body" v-model="form.body" rows="16"/>
+                    <MarkdownEditor v-model="form.body" />
+                    <TextArea id="body" v-model="form.body" rows="16" class="mt-2"/>
                     <InputError :message="form.errors.body" class="mt-2"/>
                 </div>
 
@@ -35,6 +36,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextArea from "@/Components/TextArea.vue";
 import TextInput from "@/Components/TextInput.vue";
+import MarkdownEditor from "@/Components/MarkdownEditor.vue";
 
 const form = useForm({
     title: '',
