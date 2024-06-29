@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->restrictOnDelete(); // This will cause a DB exception if the user who has posts was deleted
             $table->string('title');
             $table->longText('body');
+            $table->longText('html')->comment('The body of the post in HTML format');
             $table->timestamps();
         });
     }
