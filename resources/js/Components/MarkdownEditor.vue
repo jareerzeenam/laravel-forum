@@ -110,6 +110,8 @@
                     <i class="ri-code-block"></i>
                 </button>
             </li>
+
+            <slot name="toolbar" :editor="editor" />
         </menu>
         <EditorContent :editor="editor" />
     </div>
@@ -154,7 +156,8 @@ const editor = useEditor({
     onUpdate: ()=> emit('update:modelValue', editor.value?.storage.markdown.getMarkdown()),
 });
 
-defineExpose({focus:() => editor.value?.commands.focus()})  ;
+// Expose the editor's focus method to the parent component
+defineExpose({focus:() => editor.value?.commands.focus()});
 
 watch(() => props.modelValue,(value) => {
     if(value === editor.value?.storage.markdown.getMarkdown()) return;

@@ -12,7 +12,18 @@
 
                 <div class="mt-2">
                     <InputLabel for="body" class="sr-only">Body</InputLabel>
-                    <MarkdownEditor v-model="form.body" editorClass="min-h-[370px]" placeholder="Write something amazing..." />
+                    <MarkdownEditor v-model="form.body" editorClass="min-h-[370px]" placeholder="Write something amazing...">
+                        <template #toolbar="{editor}">
+                            <li v-if="! isInProduction()">
+                                <button @click="autofill"
+                                        type="button"
+                                        class="px-3 py-2"
+                                        title="Autofill">
+                                    <i class="ri-archive-line"></i>
+                                </button>
+                            </li>
+                        </template>
+                    </MarkdownEditor>
                     <InputError :message="form.errors.body" class="mt-2"/>
                 </div>
 
@@ -33,15 +44,26 @@ import Heading from "@/Components/Heading.vue";
 import Container from "@/Components/Container.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextArea from "@/Components/TextArea.vue";
 import TextInput from "@/Components/TextInput.vue";
 import MarkdownEditor from "@/Components/MarkdownEditor.vue";
+import {isInProduction} from "@/Utilities/environment.js";
 
 const form = useForm({
     title: '',
     body: '',
 });
 
-
 const createPost = () => form.post(route('posts.store'));
+
+const autofill = async () => {
+
+    if (isInProduction()) {
+        return;
+    }
+
+    const response = await axios.get('/local/post-content');
+
+    form.title = response.data.title;
+    form.body = response.data.body;
+};
 </script>
