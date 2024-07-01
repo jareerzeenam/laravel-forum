@@ -12,12 +12,7 @@ use Str;
 class Post extends Model
 {
     use HasFactory;
-
-    protected static function booted()
-    {
-        static::saving(fn (self $post) => $post->fill(['html' => str($post->body)->markdown()]));
-    }
-
+    use Concerns\ConvertMarkdownToHtml;
 
     public function user(): BelongsTo
     {
