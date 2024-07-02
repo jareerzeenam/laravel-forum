@@ -8,7 +8,7 @@
                     <span class="block pt-1 text-sm text-gray-600">{{ formattedDate(post) }} by {{ post.user.name }}</span>
                 </Link>
 
-                <Link href="#!" class="mb-2 rounded-full py-0.5 px-2 border border-pink-500 text-pink-500 hover:bg-indigo-500 hover:text-white hover:border-none">
+                <Link :href="route('posts.index',{ topic: post.topic.slug })" class="mb-2 rounded-full py-0.5 px-2 border border-pink-500 text-pink-500 hover:bg-indigo-500 hover:text-white hover:border-none">
                     {{ post.topic.name}}
                 </Link>
             </li>
