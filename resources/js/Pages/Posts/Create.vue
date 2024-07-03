@@ -1,7 +1,7 @@
 <template>
     <AppLayout title="Create">
         <Container>
-            <Heading :title="'Create a Post'"/>
+            <PageHeading>Create a Post</PageHeading>
 
             <form @submit.prevent="createPost" class="mt-6">
                 <div>
@@ -47,6 +47,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import MarkdownEditor from "@/Components/MarkdownEditor.vue";
 import {isInProduction} from "@/Utilities/environment.js";
+import PageHeading from "@/Components/PageHeading.vue";
 
 const form = useForm({
     title: '',
