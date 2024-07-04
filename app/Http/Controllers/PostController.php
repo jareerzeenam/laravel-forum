@@ -54,6 +54,7 @@ class PostController extends Controller
     {
         $data = $request->validate([
             'title' => ['required', 'string', 'min:10', 'max:120'],
+            'topic_id' => ['required','exists:topics,id'],
             'body' => ['required', 'string','min:100', 'max:10000'],
         ]);
 
