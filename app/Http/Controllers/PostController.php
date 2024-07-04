@@ -78,7 +78,7 @@ class PostController extends Controller
             return redirect($post->showRoute($request->query()), status: 301);
         }
 
-        $post->load('user');
+        $post->load('user','topic');
         return inertia('Posts/Show', [
             'post' => fn () => PostResource::make($post),
             'comments' => fn () => CommentResource::collection($post->comments()->with('user')->latest()->latest('id')->paginate(5)),
