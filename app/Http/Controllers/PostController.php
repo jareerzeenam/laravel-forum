@@ -44,7 +44,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return inertia('Posts/Create');
+        return inertia('Posts/Create',[
+            'topics' => fn() => TopicResource::collection(Topic::all()),
+        ]);
     }
 
     /**
