@@ -44,7 +44,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return inertia('Posts/Create');
+        return inertia('Posts/Create',[
+            'topics' => fn() => TopicResource::collection(Topic::all()),
+        ]);
     }
 
     /**
@@ -54,6 +56,7 @@ class PostController extends Controller
     {
         $data = $request->validate([
             'title' => ['required', 'string', 'min:10', 'max:120'],
+            'topic_id' => ['required','exists:topics,id'],
             'body' => ['required', 'string','min:100', 'max:10000'],
         ]);
 
@@ -75,7 +78,7 @@ class PostController extends Controller
             return redirect($post->showRoute($request->query()), status: 301);
         }
 
-        $post->load('user');
+        $post->load('user','topic');
         return inertia('Posts/Show', [
             'post' => fn () => PostResource::make($post),
             'comments' => fn () => CommentResource::collection($post->comments()->with('user')->latest()->latest('id')->paginate(5)),

@@ -1,7 +1,8 @@
 <template>
     <AppLayout :title="post.title">
         <Container>
-            <Heading :title="post.title"/>
+            <PageHeading class="mb-4">{{post.title}}</PageHeading>
+            <Pill :href="route('posts.index',{ topic: post.topic.slug })" class="mb-4 mt-2">{{ post.topic.name }}</Pill>
             <span class="block mt-1 text-sm text-gray-600">{{ formattedDate }} by {{ post.user.name }}</span>
 
             <article class="mt-6 prose prose-sm max-w-none" v-html="post.html"></article>
@@ -52,6 +53,8 @@ import InputError from "@/Components/InputError.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import {useConfirm} from "@/Utilities/Composables/useConfirm.js";
 import MarkdownEditor from "@/Components/MarkdownEditor.vue";
+import Pill from "@/Components/Pill.vue";
+import PageHeading from "@/Components/PageHeading.vue";
 
 const props = defineProps(['post','comments']);
 
