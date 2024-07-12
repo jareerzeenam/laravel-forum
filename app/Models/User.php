@@ -51,15 +51,6 @@ class User extends Authenticatable implements MustVerifyEmail
 //    ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    /**
      * The accessors to append to the model's array form.
      *
      * @var array<int, string>
@@ -68,7 +59,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
-    public function posts(): HasMany
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+        ];
+
+    }
+
+     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
