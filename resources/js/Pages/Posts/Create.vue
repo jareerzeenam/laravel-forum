@@ -64,7 +64,7 @@ const props = defineProps(['topics']);
 const form = useForm({
     title: '',
     topic_id: props.topics[0].id,
-    body: '',
+    body: 'Hello world!',
 });
 
 const createPost = () => form.post(route('posts.store'));
