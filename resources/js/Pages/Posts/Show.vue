@@ -1,4 +1,9 @@
 <template>
+
+    <Head>
+        <link rel="canonical" :href="post.routes.show" />
+    </Head>
+
     <AppLayout :title="post.title">
         <Container>
             <PageHeading class="mb-4">{{post.title}}</PageHeading>
@@ -41,14 +46,12 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import {computed, ref} from "vue";
 import Container from "@/Components/Container.vue";
-import Heading from "@/Components/Heading.vue";
 import Pagination from "@/Components/Pagination.vue";
 import {relativeDate} from "@/Utilities/date.js";
 import Comment from "@/Components/Comment.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import {router, useForm} from "@inertiajs/vue3";
-import TextArea from "@/Components/TextArea.vue";
+import {router, useForm, Head} from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import {useConfirm} from "@/Utilities/Composables/useConfirm.js";
