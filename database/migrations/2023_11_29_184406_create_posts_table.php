@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->longText('body');
             $table->longText('html')->comment('The body of the post in HTML format');
+            $table->unsignedBigInteger('likes_count')->default(0);
             $table->timestamps();
         });
     }
