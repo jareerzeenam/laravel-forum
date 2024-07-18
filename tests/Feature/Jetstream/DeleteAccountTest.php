@@ -4,6 +4,8 @@ use App\Models\User;
 use Laravel\Jetstream\Features;
 
 test('user accounts can be deleted', function () {
+
+    $this->withoutExceptionHandling();
     $this->actingAs($user = User::factory()->create());
 
     $response = $this->delete('/user', [
