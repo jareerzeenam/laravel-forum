@@ -12,7 +12,7 @@
                 <form v-if="$page.props.auth.user" @submit.prevent="() => commentIdBeingEdited ? updateComment() : addComment()" class="mt-4">
                     <div>
                         <InputLabel for="body" class="sr-only">Comment</InputLabel>
-                        <MarkdownEditor ref="commentTextAreaRef" id="body" v-model="commentForm.body" placeholder="Speak your mind Spock..." editorClass="min-h-[140px]"/>
+                        <MarkdownEditor ref="commentTextAreaRef" id="body" v-model="commentForm.body" placeholder="Speak your mind Spock..." editorClass="!min-h-[140px]"/>
                         <InputError :message="commentForm.errors.body" class="mt-2"/>
                     </div>
 
@@ -107,11 +107,17 @@ const deleteComment = async (commentId) => {
         return;
     }
 
-    router.delete(route('comments.destroy', { comment: commentId, page: props.comments.meta.current_page }),{
+    router.delete(route('comments.destroy', {
+        comment: commentId,
+        page: props.comments.data.length > 1
+            ? props.comments.meta.current_page
+            : Math.max(props.comments.meta.current_page - 1, 1)
+    }),
+        {
         preserveScroll: true,
         onSuccess: () => {
             // Do something after the comment is deleted
-        }
-    });
+            }
+        });
 }
 </script>
