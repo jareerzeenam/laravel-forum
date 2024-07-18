@@ -5,24 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Comment extends Model
+class Like extends Model
 {
     use HasFactory;
-    use Concerns\ConvertMarkdownToHtml;
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    public function post(): BelongsTo
-    {
-        return $this->belongsTo(Post::class);
-    }
 
-    public function likes(): MorphMany
+    public function likeable(): MorphTo
     {
-        return $this->morphMany(Like::class,'likeable');
+        return $this->morphTo();
     }
 }
