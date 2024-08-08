@@ -8,13 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Laravel\Scout\Searchable;
 use Str;
+
 use function dd;
 
 class Post extends Model
 {
     use HasFactory;
     use Concerns\ConvertMarkdownToHtml;
+    use Searchable;
 
     public function user(): BelongsTo
     {
@@ -33,7 +36,7 @@ class Post extends Model
 
     public function likes(): MorphMany
     {
-        return $this->morphMany(Like::class,'likeable');
+        return $this->morphMany(Like::class, 'likeable');
     }
 
     public function title(): Attribute
@@ -43,6 +46,6 @@ class Post extends Model
 
     public function showRoute(array $parameters = []): string
     {
-        return route('posts.show',[$this, Str::slug($this->title), ...$parameters]);
+        return route('posts.show', [$this, Str::slug($this->title), ...$parameters]);
     }
 }

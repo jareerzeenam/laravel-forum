@@ -10,6 +10,7 @@ use App\Models\Topic;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
 use function dd;
 use function redirect;
 use function to_route;
@@ -26,32 +27,22 @@ class PostController extends Controller
      */
     public function index(Request $request, Topic $topic = null)
     {
-        $posts = Post::with(['user','topic'])
-            ->when($topic, fn(Builder $query) => $query->whereBelongsTo($topic))
-            ->when(
-                $request->query('query'),
-                fn(Builder $query) => $query->whereAny(['title','body'], 'like', '%'.$request->query('query').'%')
-            )
-            ->latest()
-            ->latest('id')
-            ->paginate()
-            ->withQueryString();
+        if ($request->query('query')) {
+            $posts = Post::search($request->query('query'))
+                ->query(fn(Builder $query) => $query->with('user', 'topic'))
+                ->when($topic, fn(\Laravel\Scout\Builder $query) => $query->where('topic_id', $topic?->id));
+        } else {
+            $posts = Post::with(['user', 'topic'])
+                ->when($topic, fn(Builder $query) => $query->whereBelongsTo($topic))
+                ->latest()
+                ->latest('id');
+        }
 
-        return inertia('Posts/Index',[
-            'posts' => PostResource::collection($posts),
+        return inertia('Posts/Index', [
+            'posts' => PostResource::collection($posts->paginate()->withQueryString()),
             'topics' => fn() => TopicResource::collection(Topic::all()),
-            'selectedTopic' => fn () => $topic ? TopicResource::make($topic) : null,
+            'selectedTopic' => fn() => $topic ? TopicResource::make($topic) : null,
             'query' => $request->query('query'),
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return inertia('Posts/Create',[
-            'topics' => fn() => TopicResource::collection(Topic::all()),
         ]);
     }
 
@@ -62,8 +53,8 @@ class PostController extends Controller
     {
         $data = $request->validate([
             'title' => ['required', 'string', 'min:10', 'max:120'],
-            'topic_id' => ['required','exists:topics,id'],
-            'body' => ['required', 'string','min:100', 'max:10000'],
+            'topic_id' => ['required', 'exists:topics,id'],
+            'body' => ['required', 'string', 'min:100', 'max:10000'],
         ]);
 
         $post = Post::create([
@@ -76,20 +67,30 @@ class PostController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return inertia('Posts/Create', [
+            'topics' => fn() => TopicResource::collection(Topic::all()),
+        ]);
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Request $request, Post $post)
     {
-        if (! Str::endsWith($post->showRoute(), $request->path())) {
+        if (!Str::endsWith($post->showRoute(), $request->path())) {
             return redirect($post->showRoute($request->query()), status: 301);
         }
 
-        $post->load('user','topic');
+        $post->load('user', 'topic');
         return inertia('Posts/Show', [
-            'post' => fn () => PostResource::make($post)->withLikePermission(),
+            'post' => fn() => PostResource::make($post)->withLikePermission(),
             'comments' => function () use ($post) {
-                $commentResource =  CommentResource::collection($post->comments()->with('user')->latest()->latest('id')->paginate(5));
-                $commentResource->collection->transform(fn ($resource) => $resource->withLikePermission());
+                $commentResource = CommentResource::collection($post->comments()->with('user')->latest()->latest('id')->paginate(5));
+                $commentResource->collection->transform(fn($resource) => $resource->withLikePermission());
 
                 return $commentResource;
             },
