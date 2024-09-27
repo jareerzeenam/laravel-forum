@@ -6,6 +6,7 @@ use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Number;
+
 use function str;
 
 class PostResource extends JsonResource
@@ -32,6 +33,7 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'body' => $this->body,
             'html' => $this->html,
+            'hello' => 'world',
             'likes_count' => Number::abbreviate($this->likes_count), // 1.2k, 1.2m, 1.2b, 1.2t
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
@@ -39,7 +41,9 @@ class PostResource extends JsonResource
                 'show' => $this->showRoute(),
             ],
             'can' => [
-                'like' => $this->when($this->withLikePermission, fn () => $request->user()?->can('create', [Like::class, $this->resource])),
+                'like' => $this->when($this->withLikePermission,
+                    fn() => $request->user()?->can('create', [Like::class, $this->resource])),
+                'update' => $request->user()?->can('update', $this->resource),
             ]
         ];
     }

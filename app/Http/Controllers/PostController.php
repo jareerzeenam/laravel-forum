@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 use function dd;
+use function inertia;
 use function redirect;
 use function to_route;
 
@@ -102,7 +103,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $post->load('user', 'topic');
+        return inertia('Posts/Edit', [
+            'topics' => fn() => TopicResource::collection(Topic::all()),
+            'post' => fn() => PostResource::make($post),
+        ]);
     }
 
     /**
@@ -110,7 +115,15 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->validate([
+            'title' => ['required', 'string', 'min:10', 'max:120'],
+            'topic_id' => ['required', 'exists:topics,id'],
+            'body' => ['required', 'string', 'min:100', 'max:10000'],
+        ]);
+
+        $post->update($data);
+
+        return redirect($post->showRoute());
     }
 
     /**

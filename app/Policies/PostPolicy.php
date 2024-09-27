@@ -6,6 +6,8 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
+use function now;
+
 class PostPolicy
 {
     /**
@@ -37,7 +39,10 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-        //
+        if ($user->id !== $post->user_id) {
+            return false;
+        }
+        return $post->created_at->isAfter(now()->subHours(5));
     }
 
     /**
